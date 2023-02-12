@@ -1,58 +1,63 @@
 /* Treehouse FSJS Techdegree
  * Project 4 - OOP Game App
  * Game.js */
+class Game {
+  constructor() {
+      this.missed = 0;
+      this.phrases = [
+          new Phrase('Say cheese'),
+          new Phrase('To boldly go where no man has gone before'),
+          new Phrase('Spitting feathers'),
+          new Phrase(' Go out on a limb'),
+          new Phrase(' Magical realism'),
+      ];
+      this.activePhrase = 'null';
+  }
 
-class Game{
-    constructor(){
-     this.missed ='0';
-     this.phrases = [
-        new Phrase('Say cheese'),
-        new Phrase('To boldly go where no man has gone before'),
-        new Phrase('Spitting feathers'),
-        new Phrase(' Go out on a limb'),
-        new Phrase(' Magical realism'),
-     ];
-     this.activePhrase ='null';
-     }
+  getRandomPhrase() {
+      return this.phrases[Math.floor(Math.random() * this.phrases.length)];
 
-getRandomPhrase() {
-    return this.phrases[ Math.floor( Math.random() * this.phrases.length ) ];
+  };
 
-};
+  startGame() {
+      const overlay = document.getElementById('overlay');
+      overlay.style.display = "none";
 
-startGame() {
- const overlay = document.getElementById('overlay');
- overlay.style.display = "none";
+      this.activePhrase = this.getRandomPhrase();
+      this.activePhrase.addPhraseToDisplay();
 
- this.activePhrase = this.getRandomPhrase();     
- this.activePhrase.addPhraseToDisplay();    
+  };
 
-};
+  /**
+  * Checks for winning move
+  * @return {boolean} True if game has been won, false if game wasn't
+  `checkForWin()`: This method checks to see if the player has revealed all of the letters in the active phrase.*/
 
-/**
-* Checks for winning move
-* @return {boolean} True if game has been won, false if game wasn't
-`checkForWin()`: This method checks to see if the player has revealed all of the letters in the active phrase.*/
+  checkForWin() {
+      let remainingLetters = [];
+      let hiddenBoxes = document.querySelectorAll(".hide");
 
-checkForWin() {
- let remainingLetters = [ ];
- let hiddenBoxes = document.querySelectorAll (".hide");
+      hiddenBoxes.forEach(box => {
+          remainingLetters.push(box)
+      });
+      if (remainingLetters.length === 0) {
+          this.gameOver();
 
-  hiddenBoxes.forEach(box=> {
-    remainingLetters.push(box)
-  });
+      }
 
-};
+  };
 
-/**
-* Increases the value of the missed property
-* Removes a life from the scoreboard
-* Checks if player has remaining lives and ends game if player is out
-*/
-removeLife() {
+
+
+  /**
+   * Increases the value of the missed property
+   * Removes a life from the scoreboard
+   * Checks if player has remaining lives and ends game if player is out
+   */
+  removeLife() {
       const tries = document.querySelectorAll(".tries img");
       // for (let i = 0; i < tries.length; i++) {
-          tries[this.missed].setAttribute('src', 'images/lostHeart.png');
+      tries[this.missed].setAttribute('src', 'images/lostHeart.png');
       // }
 
       this.missed++;
@@ -64,7 +69,7 @@ removeLife() {
       console.log(tries);
   };
 
-/**
+  /**
    * Displays game over message
    * @param {boolean} gameWon - Whether or not the user won the game
    */
@@ -80,27 +85,45 @@ removeLife() {
           message.innerText = 'You Win!';
           overlay.className = 'win';
       } else {
-          message.innerText = 'Better luck next time :(';
+          message.innerText = 'Better luck next time';
           overlay.className = 'lose';
 
       }
   };
 
   handleInteraction(button) {
-    button.disabled = true;
-    
-    if (this.activePhrase.checkLetter(button.innerHTML) ) {
-        button.classList.add('chosen');
-        this.activePhrase.showMatchedLetter(button.innerHTML);
+      button.disabled = true;
 
-        if ( this.checkForWin() ) {
-            this.gameOver();
-            this.restartGame();
-        } 
+      if (this.activePhrase.checkLetter(button.innerHTML)) {
+          button.classList.add('chosen');
+          this.activePhrase.showMatchedLetter(button.innerHTML);
 
-    } else {
-        button.classList.add('wrong');
-        this.removeLife();
-    };
-    
+          if (this.checkForWin()) {
+              this.gameOver();
+              this.restartGame();
+          }
+
+      } else {
+          button.classList.add('wrong');
+          this.removeLife();
+      };
+
+  }
+  restartGame() {
+      keyboard.forEach(key => {
+          key.disabled = false;
+          key.classList.remove('chosen');
+          key.classList.remove('wrong');
+      });
+
+      let heartImages = document.querySelectorAll('.tries img');
+      heartImages.forEach(heart => {
+          heart.firstChild.src = 'images/liveHeart.png';
+      })
+
+      let listItems = document.getElementById('phrase').firstElementChild;
+      listItems.innerHTML = '';
+
+  }
+
 }
