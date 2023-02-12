@@ -49,16 +49,58 @@ checkForWin() {
 * Removes a life from the scoreboard
 * Checks if player has remaining lives and ends game if player is out
 */
-removeLife() {};
+removeLife() {
+      const tries = document.querySelectorAll(".tries img");
+      // for (let i = 0; i < tries.length; i++) {
+          tries[this.missed].setAttribute('src', 'images/lostHeart.png');
+      // }
+
+      this.missed++;
+
+      if (this.missed === 5) {
+          this.gameOver();
+          this.restartGame();
+      }
+      console.log(tries);
+  };
+
 /**
-* Displays game over message
-* @param {boolean} gameWon - Whether or not the user won the game
-*/
-gameOver(gameWon) {};
+   * Displays game over message
+   * @param {boolean} gameWon - Whether or not the user won the game
+   */
+  gameOver() {
+      const overlay = document.getElementById('overlay');
+      overlay.style.display = '';
+
+      const message = document.getElementById('game-over-message');
+      const button = document.getElementById('btn__reset');
+      button.innerText = 'Play Again!';
+
+      if (this.missed < 5) {
+          message.innerText = 'You Win!';
+          overlay.className = 'win';
+      } else {
+          message.innerText = 'Better luck next time :(';
+          overlay.className = 'lose';
+
+      }
+  };
+
+  handleInteraction(button) {
+    button.disabled = true;
+    
+    if (this.activePhrase.checkLetter(button.innerHTML) ) {
+        button.classList.add('chosen');
+        this.activePhrase.showMatchedLetter(button.innerHTML);
+
+        if ( this.checkForWin() ) {
+            this.gameOver();
+            this.restartGame();
+        } 
+
+    } else {
+        button.classList.add('wrong');
+        this.removeLife();
+    };
+    
 }
-
-
-
-
-
-
