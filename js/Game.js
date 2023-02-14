@@ -4,18 +4,22 @@
 
 class Game {
     constructor() {
-        this.missed = 0;
+      // missed is 0 - no guesses at start of game
+        this.missed = 0; 
         this.phrases = [
             new Phrase('Say cheese'),
             new Phrase('To boldly go where no man has gone before'),
             new Phrase('Spitting feathers'),
-            new Phrase(' Go out on a limb'),
-            new Phrase(' Magical realism')
+            new Phrase('Go out on a limb'),
+            new Phrase('Magical realism')
         ];
+//         This is the Phrase object that’s currently in play. The initial value
+// is `null`.
         this.activePhrase = null;
     }
      
-    // 1. Select a phrase from phrases property
+    // 1. This method should select and then return a random phrase from the array of phrases
+    //  stored in the Game class’s `phrases` property.
     getRandomPhrase() {
         return this.phrases[Math.floor(Math.random() * this.phrases.length)];
 

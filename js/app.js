@@ -2,22 +2,25 @@
  * Project 4 - OOP Game App
  * app.js */
 
+// 1. app.js to create a new instance of the `Game` class and add event listeners for the start
+// button and onscreen keyboard buttons.
 
-// Inside the app.js file, declare a new variable called `game` that’s not set to anything. Then, add a "click" event listener to the HTML `<button>` element with an `id` of
-// `btn__reset`.
-const startGameButton = document.getElementById('btn__reset');
+const startButton = document.getElementById('btn__reset');
+const keyBoardButton= document.getElementById('qwerty')
+let game;
+ 
 
-// const newGame = new Game();
-const game = new Game();
-
-startGameButton.addEventListener('click', (e) => {
+startButton.addEventListener('click', (e) => {
+    game = new Game();
     game.startGame();
 
 });
 
-document.getElementById('qwerty').addEventListener('click', (e) => {
-    if (e.target.tagName === 'BUTTON') {
-        game.handleInteraction(e.target);
+
+keyBoardButton.addEventListener('click', (e) => {
+    if ( e.target.tagName === 'BUTTON' ) {
+         game.handleInteraction(e.target);
     };
 });
-game.handleInteraction();
+
+  

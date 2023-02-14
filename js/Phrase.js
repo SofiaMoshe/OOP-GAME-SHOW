@@ -3,6 +3,8 @@
  * Phrase.js */
 class Phrase {
     constructor(phrase) {
+// 		This is the actual phrase the Phrase object is representing. This property
+// should be set to the `phrase` parameter, but converted to all lower case.
         this.phrase = phrase.toLowerCase();
     }
     /**
